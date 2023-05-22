@@ -16,52 +16,50 @@ export const register = async (
   if (user) {
     return res.status(400).json({ message: "User already exists" });
   } else {
-    const hash = await bcrypt.hash(password, saltRounds);
-    const newUser = await User.create({
-      username: username,
-      email: email,
-      password: hash,
-    });
-    newUser.save();
+    try {
+      const hash = await bcrypt.hash(password, saltRounds);
+      const newUser = await User.create({
+        username: username,
+        email: email,
+        password: hash,
+      });
 
-    return res.status(201).json({ message: "User created" });
+      return res.status(201).json({ message: "User created" });
+    } catch (error) {
+      console.error(error);
+    }
   }
 };
 
 export const login = async (req: TypedRequestBody<Login>, res: Response) => {
   const { email, password } = req.body;
-  console.log(req.body);
-  const user = await User.findOne({ email: email });
 
-  if (!user) {
-    return res.status(400).json({ message: "User not found" });
-  } else {
+  try {
+    const user = await User.findOne({ email: email });
     const passwordCorrect = await bcrypt.compare(password, user.password);
+    if (!passwordCorrect) throw Error;
 
-    if (!passwordCorrect) {
-      return res.status(400).send("Incorrect password");
-    } else {
-      const token = generateToken({
-        id: user._id,
-        username: user.username,
-        email: user.email,
-      });
+    const token = generateToken({
+      id: user._id,
+      username: user.username,
+      email: user.email,
+    });
 
-      res.cookie("token", token, {
-        maxAge: 1000 * 60 * 60 * 24 * 7,
-        secure: true,
-        httpOnly: true,
-        sameSite: "none",
-      });
+    res.cookie("token", token, {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      secure: true,
+      httpOnly: true,
+      sameSite: "none",
+    });
 
-      return res
-        .status(200)
-        .json({ message: "Login successful", token: token });
-    }
+    return res.status(200).json({ message: "Login successful", token: token });
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ message: "Username or password wrong!" });
   }
 };
 
-export const logout = async (_, res: Response) => {
+export const logout = async (_: any, res: Response) => {
   try {
     res.clearCookie("token", {
       sameSite: "none",
