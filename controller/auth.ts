@@ -14,7 +14,9 @@ export const register = async (
   const user = await User.exists({ email: email });
 
   if (user) {
-    return res.status(400).json({ message: "User already exists" });
+    return res
+      .status(400)
+      .json({ status: 400, message: "User already exists." });
   } else {
     try {
       const hash = await bcrypt.hash(password, saltRounds);
@@ -24,7 +26,7 @@ export const register = async (
         password: hash,
       });
 
-      return res.status(201).json({ message: "User created" });
+      return res.status(201).json({ status: 200, message: "User created." });
     } catch (error) {
       console.error(error);
     }
@@ -52,10 +54,17 @@ export const login = async (req: TypedRequestBody<Login>, res: Response) => {
       sameSite: "none",
     });
 
-    return res.status(200).json({ message: "Login successful", token: token });
+    return res.status(200).json({
+      status: 200,
+      message: "Login successful.",
+      token: token,
+      username: user.username,
+    });
   } catch (error) {
     console.error(error);
-    return res.status(400).json({ message: "Username or password wrong!" });
+    return res
+      .status(400)
+      .json({ status: 400, message: "Username or password wrong." });
   }
 };
 
@@ -66,8 +75,11 @@ export const logout = async (_: any, res: Response) => {
       secure: true,
       httpOnly: true,
     });
-    return res.status(200).json({ message: "Logout successful" });
+    return res.status(200).json({ status: 200, message: "Logout successful." });
   } catch (error) {
     console.log(error);
+    return res
+      .status(500)
+      .json({ status: 500, message: "Something went wrong." });
   }
 };

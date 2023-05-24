@@ -11,8 +11,8 @@ export interface Login {
   email: string;
   password: string;
 }
-
 export interface TypedRequestBody<T> extends Express.Request {
+  user: JWTPayload;
   body: T;
 }
 
