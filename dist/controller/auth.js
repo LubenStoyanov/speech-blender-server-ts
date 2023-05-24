@@ -67,7 +67,7 @@ export const logout = async (_, res) => {
         return res.status(200).json({ status: 200, message: "Logout successful." });
     }
     catch (error) {
-        console.log(error);
+        console.error(error);
         return res
             .status(500)
             .json({ status: 500, message: "Something went wrong." });

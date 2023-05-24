@@ -1,3 +1,4 @@
+import type { Response } from "express";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -25,7 +26,7 @@ connectToDatabase();
 app.use(loggerMiddleware);
 app.use("/api/v1", authRouter);
 app.use("/profile", profileRouter);
-app.get("/", (req, res) => res.send());
+app.get("/", (_, res: Response) => res.send());
 app.listen(port, () =>
   console.log(`Server running on http://localhost:${port}`)
 );

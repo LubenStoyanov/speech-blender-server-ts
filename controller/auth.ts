@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
-import { Register, Login, TypedRequestBody } from "../utils/types.js";
-import { Response } from "express";
+import type { Register, Login, TypedRequestBody } from "../utils/types.js";
+import type { Response } from "express";
 import { User } from "../models/user.js";
 import { generateToken } from "../utils/jwt.js";
 
@@ -77,7 +77,7 @@ export const logout = async (_: any, res: Response) => {
     });
     return res.status(200).json({ status: 200, message: "Logout successful." });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res
       .status(500)
       .json({ status: 500, message: "Something went wrong." });

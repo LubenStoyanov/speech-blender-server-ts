@@ -1,5 +1,5 @@
 import Express from "express";
-import { Types } from "mongoose";
+import type { Types } from "mongoose";
 
 export interface Register {
   email: string;

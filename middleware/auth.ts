@@ -1,16 +1,14 @@
 import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
-import { JWTPayload, TypedRequestBody } from "../utils/types.js";
+import type { JWTPayload, TypedRequestBody } from "../utils/types.js";
 
 export const authMiddleware = (
   req: TypedRequestBody<JWTPayload>,
   res: Response,
   next: NextFunction
 ) => {
-  console.log("here", req.cookies);
   // const authHeader = req.headers.authorization;
   const token = req.cookies.token;
-  console.log(token);
   if (token) {
     // const token = authHeader.split(" ")[1];
     try {
