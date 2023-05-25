@@ -1,12 +1,12 @@
 export const getProfileData = async (req, res) => {
     try {
         return res.json({
-            status: 200,
+            success: true,
             message: "Successfully loaded profile data.",
         });
     }
     catch (error) {
-        return res.json({ status: 400, message: "Something went wrong." });
+        return res.json({ success: false, message: "Something went wrong." });
     }
 };
 //# sourceMappingURL=profile.js.map

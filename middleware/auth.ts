@@ -1,9 +1,9 @@
 import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
-import type { JWTPayload, TypedRequestBody } from "../utils/types.js";
+import type { JWTPayloadI, TypedRequestBody } from "../utils/types.js";
 
 export const authMiddleware = (
-  req: TypedRequestBody<JWTPayload>,
+  req: TypedRequestBody<JWTPayloadI>,
   res: Response,
   next: NextFunction
 ) => {
@@ -15,7 +15,7 @@ export const authMiddleware = (
       const decodedToken = jwt.verify(
         token,
         process.env.JWT_SECRET
-      ) as JWTPayload;
+      ) as JWTPayloadI;
       if (!decodedToken) {
         return res.status(403).json({ error: "Missing required claim" });
       }

@@ -1,28 +1,32 @@
 import Express from "express";
 import type { Types } from "mongoose";
 
-export interface Register {
+export interface RegisterI {
   email: string;
   username: string;
   password: string;
 }
 
-export interface Login {
+export interface LoginI {
   email: string;
   password: string;
 }
+export interface PodcastI {
+  title: string;
+  userId: string;
+}
 export interface TypedRequestBody<T> extends Express.Request {
-  user: JWTPayload;
+  user: JWTPayloadI;
   body: T;
 }
 
-export interface JWTPayload {
-  id: Types.ObjectId;
+export interface JWTPayloadI {
+  userId: Types.ObjectId;
   username: string;
   email: string;
 }
 
-export interface JWTToken {
+export interface JWTTokenI {
   id: Types.ObjectId;
   username: string;
   email: string;

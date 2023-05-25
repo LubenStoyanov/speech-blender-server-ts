@@ -1,22 +1,18 @@
 import bcrypt from "bcrypt";
-import type { Register, Login, TypedRequestBody } from "../utils/types.js";
-import type { Response } from "express";
+import type { Request, Response } from "express";
 import { User } from "../models/user.js";
 import { generateToken } from "../utils/jwt.js";
 
 const saltRounds = 10;
 
-export const register = async (
-  req: TypedRequestBody<Register>,
-  res: Response
-) => {
+export const register = async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
   const user = await User.exists({ email: email });
 
   if (user) {
     return res
       .status(400)
-      .json({ status: 400, message: "User already exists." });
+      .json({ success: false, message: "User already exists." });
   } else {
     try {
       const hash = await bcrypt.hash(password, saltRounds);
@@ -26,14 +22,17 @@ export const register = async (
         password: hash,
       });
 
-      return res.status(201).json({ status: 200, message: "User created." });
+      return res.status(201).json({ success: true, message: "User created." });
     } catch (error) {
       console.error(error);
+      return res
+        .status(201)
+        .json({ success: false, message: "Something went wrong." });
     }
   }
 };
 
-export const login = async (req: TypedRequestBody<Login>, res: Response) => {
+export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   try {
@@ -42,7 +41,7 @@ export const login = async (req: TypedRequestBody<Login>, res: Response) => {
     if (!passwordCorrect) throw Error;
 
     const token = generateToken({
-      id: user._id,
+      userId: user._id,
       username: user.username,
       email: user.email,
     });
@@ -55,16 +54,17 @@ export const login = async (req: TypedRequestBody<Login>, res: Response) => {
     });
 
     return res.status(200).json({
-      status: 200,
+      success: true,
       message: "Login successful.",
       token: token,
       username: user.username,
+      userId: user._id,
     });
   } catch (error) {
     console.error(error);
     return res
       .status(400)
-      .json({ status: 400, message: "Username or password wrong." });
+      .json({ success: false, message: "Username or password wrong." });
   }
 };
 
@@ -75,11 +75,13 @@ export const logout = async (_: any, res: Response) => {
       secure: true,
       httpOnly: true,
     });
-    return res.status(200).json({ status: 200, message: "Logout successful." });
+    return res
+      .status(200)
+      .json({ success: true, message: "Logout successful." });
   } catch (error) {
     console.error(error);
     return res
       .status(500)
-      .json({ status: 500, message: "Something went wrong." });
+      .json({ success: false, message: "Something went wrong." });
   }
 };

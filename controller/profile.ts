@@ -1,12 +1,16 @@
-import type { Request, Response } from "express";
+import type { Response } from "express";
+import { JWTPayloadI, PodcastI, TypedRequestBody } from "../utils/types.js";
 
-export const getProfileData = async (req: Request, res: Response) => {
+export const getProfileData = async (
+  req: TypedRequestBody<JWTPayloadI & PodcastI>,
+  res: Response
+) => {
   try {
     return res.json({
-      status: 200,
+      success: true,
       message: "Successfully loaded profile data.",
     });
   } catch (error) {
-    return res.json({ status: 400, message: "Something went wrong." });
+    return res.json({ success: false, message: "Something went wrong." });
   }
 };

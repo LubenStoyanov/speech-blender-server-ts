@@ -8,7 +8,7 @@ export const register = async (req, res) => {
     if (user) {
         return res
             .status(400)
-            .json({ status: 400, message: "User already exists." });
+            .json({ success: false, message: "User already exists." });
     }
     else {
         try {
@@ -18,10 +18,13 @@ export const register = async (req, res) => {
                 email: email,
                 password: hash,
             });
-            return res.status(201).json({ status: 200, message: "User created." });
+            return res.status(201).json({ success: true, message: "User created." });
         }
         catch (error) {
             console.error(error);
+            return res
+                .status(201)
+                .json({ success: false, message: "Something went wrong." });
         }
     }
 };
@@ -33,7 +36,7 @@ export const login = async (req, res) => {
         if (!passwordCorrect)
             throw Error;
         const token = generateToken({
-            id: user._id,
+            userId: user._id,
             username: user.username,
             email: user.email,
         });
@@ -44,17 +47,18 @@ export const login = async (req, res) => {
             sameSite: "none",
         });
         return res.status(200).json({
-            status: 200,
+            success: true,
             message: "Login successful.",
             token: token,
             username: user.username,
+            userId: user._id,
         });
     }
     catch (error) {
         console.error(error);
         return res
             .status(400)
-            .json({ status: 400, message: "Username or password wrong." });
+            .json({ success: false, message: "Username or password wrong." });
     }
 };
 export const logout = async (_, res) => {
@@ -64,13 +68,15 @@ export const logout = async (_, res) => {
             secure: true,
             httpOnly: true,
         });
-        return res.status(200).json({ status: 200, message: "Logout successful." });
+        return res
+            .status(200)
+            .json({ success: true, message: "Logout successful." });
     }
     catch (error) {
         console.error(error);
         return res
             .status(500)
-            .json({ status: 500, message: "Something went wrong." });
+            .json({ success: false, message: "Something went wrong." });
     }
 };
 //# sourceMappingURL=auth.js.map
