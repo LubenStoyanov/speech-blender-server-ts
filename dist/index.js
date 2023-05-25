@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 connectToDatabase();
 app.use(loggerMiddleware);
 app.use("/api/v1", authRouter);
-app.use("/profile", profileRouter);
+app.use("/api/v1/profile", profileRouter);
 app.get("/", (_, res) => res.send());
 app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
 //# sourceMappingURL=index.js.map
