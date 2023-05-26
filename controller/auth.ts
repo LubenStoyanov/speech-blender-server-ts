@@ -85,3 +85,14 @@ export const logout = async (_: any, res: Response) => {
       .json({ success: false, message: "Something went wrong." });
   }
 };
+
+export const validateToken = async (req: Request, res: Response) => {
+  try {
+    return res.status(200).json({ success: true, message: "User validated." });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error." });
+  }
+};

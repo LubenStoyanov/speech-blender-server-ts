@@ -79,4 +79,15 @@ export const logout = async (_, res) => {
             .json({ success: false, message: "Something went wrong." });
     }
 };
+export const validateToken = async (req, res) => {
+    try {
+        return res.status(200).json({ success: true, message: "User validated." });
+    }
+    catch (error) {
+        console.error(error);
+        return res
+            .status(500)
+            .json({ success: false, message: "Internal Server Error." });
+    }
+};
 //# sourceMappingURL=auth.js.map

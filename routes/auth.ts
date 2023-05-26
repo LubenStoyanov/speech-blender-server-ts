@@ -1,10 +1,10 @@
 import express from "express";
-import { register, login, logout } from "../controller/auth.js";
+import { register, login, logout, validateToken } from "../controller/auth.js";
 import { authMiddleware } from "../middleware/auth.js";
 
 export const authRouter = express
   .Router()
-  .get("/validateToken", authMiddleware)
+  .post("/validateToken", authMiddleware, validateToken)
   .post("/register", register)
   .post("/login", login)
   .post("/logout", logout);
