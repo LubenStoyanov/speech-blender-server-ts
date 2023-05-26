@@ -1,7 +1,10 @@
+import { PrismaClient } from "@prisma/client";
 import type { Response } from "express";
 import { JWTPayloadI, PodcastI, TypedRequestBody } from "../utils/types.js";
 
-export const getProfileData = async (
+const prisma = new PrismaClient();
+
+export const getPodcasts = async (
   req: TypedRequestBody<JWTPayloadI & PodcastI>,
   res: Response
 ) => {

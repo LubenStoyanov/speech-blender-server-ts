@@ -1,19 +1,21 @@
+import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
-import { Podcast } from "../models/podcast.js";
-import { User } from "../models/user.js";
+const prisma = new PrismaClient();
 export const createPodcast = async (req, res) => {
     try {
         const { title } = req.body;
         const token = req.cookies.token;
         const { userId } = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findOne({ _id: userId });
+        const user = await prisma.user.findFirst({ where: { id: userId } });
         if (user) {
-            const podcast = await Podcast.create({ title: title, userId: userId });
+            const podcast = await prisma.podcast.create({
+                data: { title: title, authorId: userId },
+            });
             return res.status(200).json({
                 success: true,
                 title,
-                username: user.username,
-                podcastId: podcast._id,
+                username: user.name,
+                podcastId: podcast.id,
             });
         }
         else {

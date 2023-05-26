@@ -1,10 +1,15 @@
+import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
-import { User } from "../models/user.js";
 import { generateToken } from "../utils/jwt.js";
+const prisma = new PrismaClient();
 const saltRounds = 10;
 export const register = async (req, res) => {
     const { username, email, password } = req.body;
-    const user = await User.exists({ email: email });
+    const user = await prisma.user.findUnique({
+        where: { email: email },
+        select: { name: true },
+    });
+    console.log(user);
     if (user) {
         return res
             .status(400)
@@ -13,10 +18,12 @@ export const register = async (req, res) => {
     else {
         try {
             const hash = await bcrypt.hash(password, saltRounds);
-            const newUser = await User.create({
-                username: username,
-                email: email,
-                password: hash,
+            const newUser = await prisma.user.create({
+                data: {
+                    name: username,
+                    email: email,
+                    password: hash,
+                },
             });
             return res.status(201).json({ success: true, message: "User created." });
         }
@@ -31,13 +38,13 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
     const { email, password } = req.body;
     try {
-        const user = await User.findOne({ email: email });
+        const user = await prisma.user.findUnique({ where: { email: email } });
         const passwordCorrect = await bcrypt.compare(password, user.password);
         if (!passwordCorrect)
             throw Error;
         const token = generateToken({
-            userId: user._id,
-            username: user.username,
+            userId: user.id,
+            username: user.name,
             email: user.email,
         });
         res.cookie("token", token, {
@@ -50,8 +57,8 @@ export const login = async (req, res) => {
             success: true,
             message: "Login successful.",
             token: token,
-            username: user.username,
-            userId: user._id,
+            username: user.name,
+            userId: user.id,
         });
     }
     catch (error) {

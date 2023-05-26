@@ -1,4 +1,6 @@
-export const getProfileData = async (req, res) => {
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+export const getPodcasts = async (req, res) => {
     try {
         return res.status(200).json({
             success: true,

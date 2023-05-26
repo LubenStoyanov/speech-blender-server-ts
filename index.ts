@@ -2,7 +2,6 @@ import type { Response } from "express";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { connectToDatabase } from "./database/db.js";
 import { authRouter } from "./routes/auth.js";
 import { profileRouter } from "./routes/profile.js";
 import { loggerMiddleware } from "./middleware/logger.js";
@@ -21,8 +20,6 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-connectToDatabase();
 
 app.use(loggerMiddleware);
 app.use("/api/v1", authRouter);

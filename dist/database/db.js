@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 import mongoose from "mongoose";
-const MONGODB_URI = process.env.MONGODB_URI;
+const DATABASE_URL = process.env.DATABASE_URL;
 export const connectToDatabase = async () => {
     try {
         const options = {
@@ -11,7 +11,7 @@ export const connectToDatabase = async () => {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         };
-        mongoose.connect(MONGODB_URI, { ...options, ...mongooseOptions });
+        mongoose.connect(DATABASE_URL, { ...options, ...mongooseOptions });
         console.log("Connected to MongoDB");
     }
     catch (error) {

@@ -21,7 +21,7 @@ export interface TypedRequestBody<T> extends Express.Request {
 }
 
 export interface JWTPayloadI {
-  userId: Types.ObjectId;
+  userId: number;
   username: string;
   email: string;
 }
