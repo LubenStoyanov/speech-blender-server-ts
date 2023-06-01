@@ -13,8 +13,6 @@ export const register = async (req: Request, res: Response) => {
     select: { name: true },
   });
 
-  console.log(user);
-
   if (user) {
     return res
       .status(400)
@@ -54,8 +52,10 @@ export const login = async (req: Request, res: Response) => {
       email: user.email,
     });
 
+    const oneDay = 1000 * 60 * 60 * 24;
+
     res.cookie("token", token, {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
+      maxAge: oneDay,
       secure: true,
       httpOnly: true,
       sameSite: "none",

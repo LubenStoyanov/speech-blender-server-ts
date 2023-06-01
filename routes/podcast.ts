@@ -1,7 +1,4 @@
 import express from "express";
-import { createPodcast } from "../controller/create.js";
-import { authMiddleware } from "../middleware/auth.js";
+import { createPodcast } from "../controller/podcast.js";
 
-export const podcastRouter = express
-  .Router()
-  .post("/podcast", authMiddleware, createPodcast);
+export const podcastRouter = express.Router().post("/create", createPodcast);

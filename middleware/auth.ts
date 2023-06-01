@@ -7,10 +7,8 @@ export const authMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  // const authHeader = req.headers.authorization;
   const token = req.cookies.token;
   if (token) {
-    // const token = authHeader.split(" ")[1];
     try {
       const decodedToken = jwt.verify(
         token,
