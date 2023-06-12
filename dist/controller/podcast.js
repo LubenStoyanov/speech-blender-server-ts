@@ -31,4 +31,18 @@ export const createPodcast = async (req, res) => {
         });
     }
 };
+export const getPodcasts = async (req, res) => {
+    const { userId } = req.user;
+    try {
+        const podcasts = await prisma.podcast.findMany({
+            take: 10,
+            where: { authorId: userId },
+        });
+        console.log(podcasts);
+        res.status(200).json({ success: true });
+    }
+    catch (error) {
+        console.error(error);
+    }
+};
 //# sourceMappingURL=podcast.js.map

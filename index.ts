@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import { authRouter } from "./routes/auth.js";
 import { loggerMiddleware } from "./middleware/logger.js";
 import { podcastRouter } from "./routes/podcast.js";
+import { authMiddleware } from "./middleware/auth.js";
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -23,7 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(loggerMiddleware);
 
 app.use("/api/v1", authRouter);
-app.use("/api/v1/podcasts", podcastRouter);
+app.use("/api/v1/podcast", authMiddleware, podcastRouter);
 
 app.get("/", (_, res: Response) => res.json({ message: "Hello there" }));
 

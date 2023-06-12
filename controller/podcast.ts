@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
-import { JWTPayloadI } from "../utils/types.js";
+import { JWTPayloadI, TypedRequestBody } from "../utils/types.js";
 
 const prisma = new PrismaClient();
 
@@ -33,5 +33,22 @@ export const createPodcast = async (req: Request, res: Response) => {
     return res.status(500).json({
       success: false,
     });
+  }
+};
+
+export const getPodcasts = async (
+  req: TypedRequestBody<JWTPayloadI>,
+  res: Response
+) => {
+  const { userId } = req.user;
+  try {
+    const podcasts = await prisma.podcast.findMany({
+      take: 10,
+      where: { authorId: userId },
+    });
+    console.log(podcasts);
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error(error);
   }
 };

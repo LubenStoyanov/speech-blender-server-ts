@@ -20,8 +20,9 @@ export const authMiddleware = (
           .json({ success: false, error: "Missing required claim" });
       }
       req.user = decodedToken;
-      next();
+      return next();
     } catch (err) {
+      console.error(err);
       return res.status(401).json({ success: false, error: "Invalid token" });
     }
   } else {

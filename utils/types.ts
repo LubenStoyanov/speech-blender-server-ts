@@ -25,9 +25,3 @@ export interface JWTPayloadI {
   username: string;
   email: string;
 }
-
-export interface JWTTokenI {
-  id: Types.ObjectId;
-  username: string;
-  email: string;
-}
