@@ -47,7 +47,7 @@ export const getPodcasts = async (
       where: { authorId: userId },
     });
     console.log(podcasts);
-    res.status(200).json({ success: true });
+    res.status(200).json({ success: true, data: podcasts });
   } catch (error) {
     console.error(error);
   }
