@@ -1,7 +1,12 @@
 import express from "express";
-import { createPodcast, getPodcasts } from "../controller/podcast.js";
+import {
+  createPodcast,
+  getPodcasts,
+  getPodcast,
+} from "../controller/podcast.js";
 
 export const podcastRouter = express
   .Router()
   .post("/create", createPodcast)
-  .get("/get", getPodcasts);
+  .get("/get/all", getPodcasts)
+  .get("/get/:id", getPodcast);

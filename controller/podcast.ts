@@ -47,8 +47,31 @@ export const getPodcasts = async (
       where: { authorId: userId },
     });
     console.log(podcasts);
-    res.status(200).json({ success: true, data: podcasts });
+    return res.status(200).json({ success: true, data: podcasts });
   } catch (error) {
     console.error(error);
+    return res.status(500).json({
+      success: false,
+    });
+  }
+};
+
+export const getPodcast = async (
+  req: TypedRequestBody<JWTPayloadI>,
+  res: Response
+) => {
+  const { id } = req.params;
+
+  try {
+    const podcast = await prisma.podcast.findUnique({
+      where: { id: Number(id) },
+    });
+
+    return res.status(200).json({ success: true, data: podcast });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+    });
   }
 };
