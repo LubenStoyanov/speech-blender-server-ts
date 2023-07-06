@@ -1,7 +1,7 @@
 import express from "express";
-import { createRecording, getRecordingsAll } from "../controller/recording.js";
+import { createRecording } from "../controller/recording.js";
 export default express
     .Router()
-    .get("/all/:podcastId", getRecordingsAll)
-    .post("/create-recording", createRecording);
+    .post("create/:id", createRecording)
+    .get("all/:id", getRecordings);
 //# sourceMappingURL=recording.js.map

@@ -1,6 +1,6 @@
 import express from "express";
 import { createPodcast, getPodcasts, getPodcast, } from "../controller/podcast.js";
-export const podcastRouter = express
+export default express
     .Router()
     .post("/create", createPodcast)
     .get("/get/all", getPodcasts)

@@ -1,28 +1,21 @@
-import { Recording } from "../models/recording.js";
 export const createRecording = async (req, res) => {
     try {
-        console.log("recording");
-        const recording = await Recording.create(req.body);
-        res.status(201).json({
-            publicId: recording.publicId,
-        });
+        const { id } = req.params;
+        return res.status(201).json({ success: true });
     }
     catch (error) {
         console.error(error);
-        res.sendStatus(500);
+        return res.status(500).json({ success: false });
     }
 };
-export const getRecordingsAll = async (req, res) => {
+export const getRecordings = async (req, res) => {
     try {
-        const { podcastId } = req.params;
-        // await Recording.deleteMany({});
-        const recordingsAll = await Recording.find({ podcastId: podcastId });
-        console.log("recordingsAll", recordingsAll);
-        res.status(200).json(recordingsAll);
+        const data;
+        return res.status(200).json({ success: true, data: data });
     }
     catch (error) {
         console.error(error);
-        res.sendStatus(500);
+        return res.status(500).json({ success: false });
     }
 };
 //# sourceMappingURL=recording.js.map
