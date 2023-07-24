@@ -46,7 +46,6 @@ export const getPodcasts = async (
       take: 10,
       where: { authorId: userId },
     });
-    console.log(podcasts);
     return res.status(200).json({ success: true, data: podcasts });
   } catch (error) {
     console.error(error);
@@ -67,6 +66,7 @@ export const getPodcast = async (
       where: { id: Number(id) },
     });
 
+    console.log("getPodcast", podcast);
     return res.status(200).json({ success: true, data: podcast });
   } catch (error) {
     console.error(error);

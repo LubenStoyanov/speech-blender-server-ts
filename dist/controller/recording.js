@@ -10,7 +10,7 @@ export const createRecording = async (req, res) => {
 };
 export const getRecordings = async (req, res) => {
     try {
-        const data;
+        const data = [];
         return res.status(200).json({ success: true, data: data });
     }
     catch (error) {

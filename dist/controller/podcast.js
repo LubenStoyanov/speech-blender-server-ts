@@ -38,7 +38,6 @@ export const getPodcasts = async (req, res) => {
             take: 10,
             where: { authorId: userId },
         });
-        console.log(podcasts);
         return res.status(200).json({ success: true, data: podcasts });
     }
     catch (error) {
@@ -54,6 +53,7 @@ export const getPodcast = async (req, res) => {
         const podcast = await prisma.podcast.findUnique({
             where: { id: Number(id) },
         });
+        console.log("getPodcast", podcast);
         return res.status(200).json({ success: true, data: podcast });
     }
     catch (error) {
