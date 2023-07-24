@@ -52,6 +52,9 @@ export const getPodcast = async (req, res) => {
     try {
         const podcast = await prisma.podcast.findUnique({
             where: { id: Number(id) },
+            include: {
+                recordings: true,
+            },
         });
         console.log("getPodcast", podcast);
         return res.status(200).json({ success: true, data: podcast });

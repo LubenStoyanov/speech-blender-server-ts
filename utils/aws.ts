@@ -1,7 +1,4 @@
-import { rejects } from "assert";
 import AWS from "aws-sdk";
-import { error } from "console";
-import { resolve } from "path";
 
 export const s3 = new AWS.S3({
   apiVersion: "2006-03-01",

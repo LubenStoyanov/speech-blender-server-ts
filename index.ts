@@ -8,6 +8,10 @@ import podcastRouter from "./routes/podcast.js";
 import recordingRouter from "./routes/recording.js";
 import { authMiddleware } from "./middleware/auth.js";
 
+import multer, { memoryStorage } from "multer";
+const storage = memoryStorage();
+const upload = multer({ storage });
+
 const app = express();
 const port = process.env.PORT || 8080;
 

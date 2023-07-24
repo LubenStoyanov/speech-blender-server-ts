@@ -64,6 +64,9 @@ export const getPodcast = async (
   try {
     const podcast = await prisma.podcast.findUnique({
       where: { id: Number(id) },
+      include: {
+        recordings: true,
+      },
     });
 
     console.log("getPodcast", podcast);
